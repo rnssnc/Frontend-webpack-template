@@ -6,9 +6,11 @@ module.exports = merge(baseWebpackConfig, {
   mode: 'development',
   devtool: 'eval',
   devServer: {
-    contentBase: 'dist',
+    contentBase: './src',
+    watchContentBase: true,
     hot: true,
     port: 1337,
+    inline: true,
   },
   plugins: [
     new webpack.SourceMapDevToolPlugin({

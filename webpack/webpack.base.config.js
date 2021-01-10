@@ -38,27 +38,7 @@ fs.readdirSync(path.resolve(__dirname, '..', 'src', 'pages'))
     pages.push(file.split('/', 2));
   });
 
-const htmlPlugins = pages.map(
-  (fileName) =>
-    new HtmlWebpackPlugin({
-      getData: () => {
-        try {
-          return JSON.parse(
-            fs.readFileSync(`../src/pages/${fileName}/data.json`, 'utf8')
-          );
-        } catch (e) {
-          console.warn(`data.json was not provided for page ${fileName}`);
-          return {};
-        }
-      },
-      filename: `${fileName}.html`,
-      template: `./pages/${fileName}/${fileName}.pug`,
-      chunks: fileName,
-      alwaysWriteToDisk: true,
-      inject: 'body',
-      hash: true,
-    })
-);
+const htmlPlugins = 'a';
 
 const ENTRIES = {};
 pages.forEach((page) => {
@@ -116,7 +96,26 @@ module.exports = {
       $: 'jquery',
       jQuery: 'jquery',
     }),
-    ...htmlPlugins,
+    //Generate html-webpack-plugin for each page
+    ...pages.map(
+      (fileName) =>
+        new HtmlWebpackPlugin({
+          getData: () => {
+            try {
+              return JSON.parse(
+                fs.readFileSync(`../src/pages/${fileName}/data.json`, 'utf8')
+              );
+            } catch (e) {
+              console.warn(`data.json was not provided for page ${fileName}`);
+              return {};
+            }
+          },
+          filename: `${fileName}.html`,
+          template: `./pages/${fileName}/${fileName}.pug`,
+          chunks: fileName,
+          inject: 'body',
+        })
+    ),
   ],
   module: {
     rules: [
