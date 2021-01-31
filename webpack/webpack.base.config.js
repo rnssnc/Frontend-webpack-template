@@ -167,6 +167,7 @@ module.exports = {
         test: /\.(ttf|woff|woff2|eot)$/,
         loader: 'file-loader',
         options: {
+          publicPath: './',
           name: 'fonts/[name].[ext]',
         },
       },
