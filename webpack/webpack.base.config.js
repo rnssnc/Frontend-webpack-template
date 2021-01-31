@@ -114,6 +114,7 @@ module.exports = {
           template: `./pages/${fileName}/${fileName}.pug`,
           chunks: fileName,
           inject: 'body',
+          minify: false,
         })
     ),
   ],
