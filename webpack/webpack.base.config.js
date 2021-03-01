@@ -36,8 +36,6 @@ fs.readdirSync(path.resolve(__dirname, '..', 'src', 'pages'))
     pages.push(file.split('/', 2));
   });
 
-const htmlPlugins = 'a';
-
 const ENTRIES = {};
 pages.forEach((page) => {
   console.log(page);
@@ -94,7 +92,7 @@ module.exports = {
       $: 'jquery',
       jQuery: 'jquery',
     }),
-    //Generate html-webpack-plugin for each page
+    // Generate html-webpack-plugin for each page
     ...pages.map(
       (fileName) =>
         new HtmlWebpackPlugin({
