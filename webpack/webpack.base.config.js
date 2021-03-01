@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+// const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
@@ -29,11 +29,9 @@ const cssLoaders = (extra) => {
   return basicLoader;
 };
 
-//Get pages
+// Get pages
 fs.readdirSync(path.resolve(__dirname, '..', 'src', 'pages'))
-  .filter((file) => {
-    return file.indexOf('base') !== 0;
-  })
+  .filter((file) => file.indexOf('base') !== 0)
   .forEach((file) => {
     pages.push(file.split('/', 2));
   });
