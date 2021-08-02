@@ -2,9 +2,9 @@ const path = require('path');
 const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-// const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerWebpackPlugin = require('css-minimizer-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 
@@ -39,7 +39,7 @@ fs.readdirSync(path.resolve(__dirname, '..', 'src', 'pages'))
 const ENTRIES = {};
 pages.forEach((page) => {
   console.log(page);
-  ENTRIES[page] = `/pages/${page}/${page}.js`;
+  ENTRIES[page] = `/pages/${page}/${page}.ts`;
   console.log(ENTRIES[page]);
 });
 
@@ -52,7 +52,7 @@ module.exports = {
   context: PATHS.src,
   entry: ENTRIES,
   optimization: {
-    minimizer: [new TerserWebpackPlugin({}), new OptimizeCssAssetsWebpackPlugin({})],
+    minimizer: [new TerserWebpackPlugin({}), new CssMinimizerWebpackPlugin()],
     splitChunks: {
       cacheGroups: {
         commons: {
@@ -78,13 +78,14 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: `[name]_[fullhash:8].css`,
     }),
-    // new CopyWebpackPlugin({
-    //   patterns: [
-    //     { from: `${PATHS.src}/fonts`, to: `fonts` },
-    //     { from: `${PATHS.src}/favicons`, to: 'favicons' },
-    //     { from: `${PATHS.src}/img`, to: `img` },
-    //   ],
-    // }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: `${PATHS.src}/public`, to: `public`, noErrorOnMissing: true },
+        // { from: `${PATHS.src}/fonts`, to: `fonts` },
+        // { from: `${PATHS.src}/favicons`, to: 'favicons' },
+        // { from: `${PATHS.src}/img`, to: `img` },
+      ],
+    }),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
@@ -111,6 +112,11 @@ module.exports = {
   ],
   module: {
     rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
       {
         test: /\.m?js$/,
         exclude: /(node_modules|bower_components)/,
@@ -164,5 +170,8 @@ module.exports = {
         },
       },
     ],
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
   },
 };

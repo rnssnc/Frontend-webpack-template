@@ -4,11 +4,14 @@ module.exports = {
     commonjs: true,
     es2021: true,
   },
-  extends: ['airbnb-base', 'prettier'],
+  extends: ['airbnb-typescript/base', 'prettier'],
   parserOptions: {
     ecmaVersion: 12,
   },
   plugins: [],
+  parserOptions: {
+    project: './tsconfig.json',
+  },
   rules: {
     'import/no-extraneous-dependencies': [
       'error',
