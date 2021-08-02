@@ -4,7 +4,7 @@ module.exports = {
     commonjs: true,
     es2021: true,
   },
-  extends: ['airbnb-typescript/base', 'prettier'],
+  extends: ['airbnb-typescript', 'prettier'],
   parserOptions: {
     ecmaVersion: 12,
   },

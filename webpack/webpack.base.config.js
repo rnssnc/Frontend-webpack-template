@@ -1,5 +1,4 @@
 const path = require('path');
-const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -7,8 +6,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerWebpackPlugin = require('css-minimizer-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
-
-const pages = [];
 
 const cssLoaders = (extra) => {
   const basicLoader = [
@@ -29,20 +26,6 @@ const cssLoaders = (extra) => {
   return basicLoader;
 };
 
-// Get pages
-fs.readdirSync(path.resolve(__dirname, '..', 'src', 'pages'))
-  .filter((file) => file.indexOf('base') !== 0)
-  .forEach((file) => {
-    pages.push(file.split('/', 2));
-  });
-
-const ENTRIES = {};
-pages.forEach((page) => {
-  console.log(page);
-  ENTRIES[page] = `/pages/${page}/${page}.ts`;
-  console.log(ENTRIES[page]);
-});
-
 const PATHS = {
   src: path.resolve(__dirname, '..', 'src'),
   dist: path.resolve(__dirname, '..', 'dist'),
@@ -50,7 +33,7 @@ const PATHS = {
 
 module.exports = {
   context: PATHS.src,
-  entry: ENTRIES,
+  entry: './index.tsx',
   optimization: {
     minimizer: [new TerserWebpackPlugin({}), new CssMinimizerWebpackPlugin()],
     splitChunks: {
@@ -71,6 +54,7 @@ module.exports = {
   resolve: {
     alias: {
       '@': PATHS.src,
+      extensions: ['.tsx', '.ts', '.js'],
     },
   },
   plugins: [
@@ -91,24 +75,11 @@ module.exports = {
       jQuery: 'jquery',
     }),
     // Generate html-webpack-plugin for each page
-    ...pages.map(
-      (fileName) =>
-        new HtmlWebpackPlugin({
-          getData: () => {
-            try {
-              return JSON.parse(fs.readFileSync(`../src/pages/${fileName}/data.json`, 'utf8'));
-            } catch (e) {
-              console.warn(`data.json was not provided for page ${fileName}`);
-              return {};
-            }
-          },
-          filename: `${fileName}.html`,
-          template: `./pages/${fileName}/${fileName}.pug`,
-          chunks: fileName,
-          inject: 'body',
-          minify: false,
-        }),
-    ),
+    new HtmlWebpackPlugin({
+      filename: `index.html`,
+      template: `index.html`,
+      minify: false,
+    }),
   ],
   module: {
     rules: [
@@ -170,8 +141,5 @@ module.exports = {
         },
       },
     ],
-  },
-  resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
   },
 };
