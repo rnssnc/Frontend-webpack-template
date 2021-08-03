@@ -1,4 +1,3 @@
-const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.config');
 
@@ -12,9 +11,4 @@ module.exports = merge(baseWebpackConfig, {
     port: 1337,
     inline: true,
   },
-  plugins: [
-    new webpack.SourceMapDevToolPlugin({
-      filename: '[file].map',
-    }),
-  ],
 });

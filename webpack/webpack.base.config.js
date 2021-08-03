@@ -3,8 +3,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerWebpackPlugin = require('css-minimizer-webpack-plugin');
-const TerserWebpackPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 
 const cssLoaders = (extra) => {
@@ -35,7 +33,6 @@ module.exports = {
   context: PATHS.src,
   entry: './index.tsx',
   optimization: {
-    minimizer: [new TerserWebpackPlugin({}), new CssMinimizerWebpackPlugin()],
     splitChunks: {
       cacheGroups: {
         commons: {
