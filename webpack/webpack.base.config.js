@@ -49,9 +49,9 @@ module.exports = {
     filename: `[name]_[fullhash:8].min.js`,
   },
   resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
     alias: {
       '@': PATHS.src,
-      extensions: ['.tsx', '.ts', '.js'],
     },
   },
   plugins: [
